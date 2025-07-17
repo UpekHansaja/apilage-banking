@@ -28,6 +28,12 @@
         </dependency>
         <dependency>
             <groupId>lk.jiat.bank</groupId>
+            <artifactId>web</artifactId>
+            <version>1.0</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
             <artifactId>rest</artifactId>
             <version>1.0</version>
             <type>war</type>
@@ -56,16 +62,32 @@
                     <version>7</version>
                     <generateApplicationXml>false</generateApplicationXml>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <skinnyWars>true</skinnyWars>
+                    <applicationXml>${project.basedir}/src/main/application/META-INF/application.xml</applicationXml>
+                    <initializeInOrder>true</initializeInOrder>
                     <modules>
+                        <ejbModule>
+                            <groupId>lk.jiat.bank</groupId>
+                            <artifactId>ejb</artifactId>
+                            <bundleFileName>lk.jiat.bank-ejb-1.0.jar</bundleFileName>
+                        </ejbModule>
+                        <webModule>
+                            <groupId>lk.jiat.bank</groupId>
+                            <artifactId>rest</artifactId>
+                            <contextRoot>/apilagebanking/api</contextRoot>
+                            <bundleFileName>lk.jiat.bank-rest-1.0.war</bundleFileName>
+                        </webModule>
                         <webModule>
                             <groupId>lk.jiat.bank</groupId>
                             <artifactId>web</artifactId>
                             <contextRoot>/apilagebanking</contextRoot>
+                            <bundleFileName>lk.jiat.bank-web-1.0.war</bundleFileName>
                         </webModule>
-                        <ejbModule>
+                        <jarModule>
                             <groupId>lk.jiat.bank</groupId>
-                            <artifactId>ejb</artifactId>
-                        </ejbModule>
+                            <artifactId>security</artifactId>
+                            <bundleDir>lib</bundleDir>
+                        </jarModule>
                     </modules>
                 </configuration>
             </plugin>

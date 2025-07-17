@@ -20,12 +20,25 @@
     </properties>
 
     <dependencies>
-        <!-- REST resources packaged into web war -->
         <dependency>
             <groupId>lk.jiat.bank</groupId>
-            <artifactId>rest</artifactId>
+            <artifactId>common</artifactId>
             <version>1.0</version>
         </dependency>
+        <!-- REST dependency removed to prevent duplication in EAR -->
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

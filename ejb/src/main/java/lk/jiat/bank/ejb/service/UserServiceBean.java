@@ -9,7 +9,7 @@ import lk.jiat.bank.jpa.entity.User;
 @Stateless
 public class UserServiceBean {
 
-    @PersistenceContext(unitName = "apilageBankingPU")
+    @PersistenceContext(unitName = "ApilageBankingPU")
     private EntityManager em;
 
     public User findByUsername(String username) {

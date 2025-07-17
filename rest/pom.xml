@@ -56,16 +56,35 @@
 
         <dependency>
             <groupId>lk.jiat.bank</groupId>
-            <artifactId>ejb</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>lk.jiat.bank</groupId>
             <artifactId>jpa</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
+            <artifactId>ejb</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <packagingExcludes>WEB-INF/lib/jakarta.jakartaee-api-*.jar</packagingExcludes>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

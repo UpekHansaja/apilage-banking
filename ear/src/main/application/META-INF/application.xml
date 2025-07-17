@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="https://jakarta.ee/xml/ns/jakartaee"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/application_10.xsd"
+             version="10">
+    <display-name>apilage-banking</display-name>
+    <module>
+        <ejb>lk.jiat.bank-ejb-1.0.jar</ejb>
+    </module>
+    <module>
+        <web>
+            <web-uri>lk.jiat.bank-rest-1.0.war</web-uri>
+            <context-root>/apilagebanking/api</context-root>
+        </web>
+    </module>
+    <module>
+        <web>
+            <web-uri>lk.jiat.bank-web-1.0.war</web-uri>
+            <context-root>/apilagebanking</context-root>
+        </web>
+    </module>
+    <library-directory>lib</library-directory>
+</application>
+
