@@ -1,15 +1,16 @@
 package lk.jiat.bank.security.auth;
 
-import jakarta.security.auth.message.callback.PasswordValidationCallback;
-import jakarta.security.enterprise.identitystore.CredentialValidationResult;
-import jakarta.security.enterprise.identitystore.IdentityStoreHandler;
-import jakarta.security.enterprise.credential.UsernamePasswordCredential;
-import jakarta.inject.Inject;
 import javax.security.auth.Subject;
-import javax.security.auth.callback.*;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
-import java.util.*;
+import java.security.Principal;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class DbLoginModule implements LoginModule {
 
@@ -50,11 +51,33 @@ public class DbLoginModule implements LoginModule {
 
     @Override
     public boolean commit() {
-        subject.getPrincipals().add(() -> username);
-        subject.getPrincipals().addAll(() -> roles);
+        subject.getPrincipals().add(new Principal() {
+            @Override
+            public String getName() {
+                return username;
+            }
+        });
+
+        for (String role : roles) {
+            subject.getPrincipals().add(new Principal() {
+                @Override
+                public String getName() {
+                    return role;
+                }
+            });
+        }
+
         return true;
     }
 
-    @Override public boolean abort() { return false; }
-    @Override public boolean logout() { return true; }
+
+    @Override
+    public boolean abort() {
+        return false;
+    }
+
+    @Override
+    public boolean logout() {
+        return true;
+    }
 }

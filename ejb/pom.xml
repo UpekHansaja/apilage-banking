@@ -17,4 +17,28 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <!-- Jakarta EE API (EJB, CDI, JPA) -->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>10.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JPA Entity Dependency (cross-module access to JPA entities) -->
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
+            <artifactId>jpa</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!-- Common Module (optional, if you're using shared DTOs/constants) -->
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
 </project>

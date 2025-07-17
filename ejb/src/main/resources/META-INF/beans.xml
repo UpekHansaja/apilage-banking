@@ -1,0 +1,6 @@
+<beans xmlns="https://jakarta.ee/xml/ns/jakartaee" version="4.0">
+    <interceptors>
+        <class>lk.jiat.bank.ejb.interceptor.LoggingInterceptor</class>
+        <class>lk.jiat.bank.ejb.interceptor.AuditInterceptor</class>
+    </interceptors>
+</beans>

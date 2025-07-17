@@ -13,11 +13,16 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
+
+    public String getName() {
+        return name;
+    }
 
     private String description;
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
+
 }
