@@ -8,14 +8,15 @@
     <artifactId>apilage-banking</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
+
     <modules>
-        <module>ear</module>
         <module>common</module>
         <module>jpa</module>
+        <module>security</module>
         <module>ejb</module>
         <module>rest</module>
         <module>web</module>
-        <module>security</module>
+        <module>ear</module>
     </modules>
 
     <properties>
@@ -23,5 +24,16 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-api</artifactId>
+                <version>${jakartaee.version}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

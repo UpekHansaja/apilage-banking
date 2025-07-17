@@ -1,14 +1,20 @@
 package lk.jiat.bank.rest.resource;
 
-import jakarta.ejb.EJB;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
+
 import lk.jiat.bank.ejb.service.AccountServiceBean;
+import lk.jiat.bank.ejb.service.UserServiceBean;
 import lk.jiat.bank.jpa.entity.Account;
 import lk.jiat.bank.jpa.entity.User;
 
+import java.security.Principal;
 import java.util.List;
 
 @Path("/accounts")
@@ -19,14 +25,24 @@ public class AccountResource {
     @EJB
     private AccountServiceBean accountService;
 
-    // ⚠️ Replace with proper user resolution via token
+    @EJB
+    private UserServiceBean userService;
+
     @GET
-    @Path("/{username}")
     @RolesAllowed({"CUSTOMER", "ADMIN"})
-    public Response getUserAccounts(@PathParam("username") String username) {
-        // Mock user to simulate test case
-        User user = new User();
-        user.setUsername(username);
+    public Response getMyAccounts(@Context SecurityContext ctx) {
+        Principal principal = ctx.getUserPrincipal();
+
+        if (principal == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        String username = principal.getName();
+        User user = userService.findByUsername(username);
+
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+        }
 
         List<Account> accounts = accountService.getAccountsByUser(user);
         return Response.ok(accounts).build();

@@ -10,11 +10,67 @@
     </parent>
 
     <artifactId>ear</artifactId>
+    <version>1.0</version>
+    <packaging>ear</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
+            <artifactId>ejb</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
+            <artifactId>rest</artifactId>
+            <version>1.0</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
+            <artifactId>security</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
+            <artifactId>jpa</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <version>7</version>
+                    <generateApplicationXml>false</generateApplicationXml>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <modules>
+                        <webModule>
+                            <groupId>lk.jiat.bank</groupId>
+                            <artifactId>web</artifactId>
+                            <contextRoot>/apilagebanking</contextRoot>
+                        </webModule>
+                        <ejbModule>
+                            <groupId>lk.jiat.bank</groupId>
+                            <artifactId>ejb</artifactId>
+                        </ejbModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>

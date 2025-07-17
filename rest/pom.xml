@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>rest</artifactId>
+    <version>1.0</version>
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

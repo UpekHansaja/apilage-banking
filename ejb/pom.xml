@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>ejb</artifactId>
+    <version>1.0</version>
+    <packaging>ejb</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

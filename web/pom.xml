@@ -10,11 +10,22 @@
     </parent>
 
     <artifactId>web</artifactId>
+    <version>1.0</version>
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <!-- REST resources packaged into web war -->
+        <dependency>
+            <groupId>lk.jiat.bank</groupId>
+            <artifactId>rest</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 
 </project>
