@@ -9,20 +9,29 @@ import jakarta.ws.rs.ext.Provider;
 import lk.jiat.bank.security.jwt.JwtUtil;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class JwtFilter implements ContainerRequestFilter {
 
+    private static final Logger LOG = Logger.getLogger(JwtFilter.class.getName());
+
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        // Skip JWT check for /api/test endpoint
-        if (requestContext.getUriInfo().getPath().startsWith("/api/test")) {
+        String path = requestContext.getUriInfo().getPath();
+        LOG.info("Processing request to: " + path);
+
+        // Skip JWT check for test endpoints
+        if (path.startsWith("/api/test") || path.equals("/api/test")) {
+            LOG.info("Skipping JWT check for test endpoint");
             return;
         }
 
         String authHeader = requestContext.getHeaderString("Authorization");
+        LOG.info("Auth header: " + authHeader);
+
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());

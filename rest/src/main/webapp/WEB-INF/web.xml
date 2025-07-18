@@ -6,39 +6,14 @@
 
     <display-name>ApilageBanking</display-name>
 
-    <!-- Security constraints for protected resources -->
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Protected API Resources</web-resource-name>
-            <url-pattern>/api/admin/*</url-pattern>
-            <url-pattern>/api/account/*</url-pattern>
-            <url-pattern>/api/transfer/*</url-pattern>
-            <url-pattern>/api/report/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            <http-method>PUT</http-method>
-            <http-method>DELETE</http-method>
+            <web-resource-name>Unprotected Resources</web-resource-name>
+            <url-pattern>/api/test</url-pattern>
+            <url-pattern>/api/test/*</url-pattern>
         </web-resource-collection>
-        <auth-constraint>
-            <role-name>USER</role-name>
-            <role-name>ADMIN</role-name>
-        </auth-constraint>
+        <!-- No auth-constraint means no authentication required -->
     </security-constraint>
-
-    <!-- Login configuration -->
-    <login-config>
-        <auth-method>BASIC</auth-method>
-        <realm-name>ApilageBankingRealm</realm-name>
-    </login-config>
-
-    <!-- Security roles -->
-    <security-role>
-        <role-name>USER</role-name>
-    </security-role>
-
-    <security-role>
-        <role-name>ADMIN</role-name>
-    </security-role>
 
     <!-- Welcome files -->
     <welcome-file-list>
