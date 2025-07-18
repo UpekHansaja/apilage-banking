@@ -3,14 +3,16 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/application_10.xsd"
              version="10">
-    <display-name>apilage-banking</display-name>
+    <application-name>apilagebanking</application-name>
+    <display-name>Apilage Banking Application</display-name>
+
     <module>
         <ejb>lk.jiat.bank-ejb-1.0.jar</ejb>
     </module>
     <module>
         <web>
             <web-uri>lk.jiat.bank-rest-1.0.war</web-uri>
-            <context-root>/apilagebanking/api</context-root>
+            <context-root>/apilage-banking</context-root>
         </web>
     </module>
     <module>

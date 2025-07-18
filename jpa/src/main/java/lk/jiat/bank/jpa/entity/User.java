@@ -29,8 +29,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    private Boolean verified;
+    private boolean verified;
 
+    @Column(name = "verification_token")
     private String verificationToken;
 
     @Column(name = "verification_token_created_at")
@@ -85,6 +86,10 @@ public class User {
 
     public void setEnabled(boolean b) {
         this.verified = b;
+    }
+
+    public boolean isEnabled() {
+        return verified;
     }
 
     public String getVerificationCode() {

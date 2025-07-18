@@ -4,16 +4,34 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd">
 
+    <display-name>ApilageBanking</display-name>
+
+    <!-- Security constraints for protected resources -->
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Secured Resources</web-resource-name>
-            <url-pattern>/api/*</url-pattern>
+            <web-resource-name>Protected API Resources</web-resource-name>
+            <url-pattern>/api/admin/*</url-pattern>
+            <url-pattern>/api/account/*</url-pattern>
+            <url-pattern>/api/transfer/*</url-pattern>
+            <url-pattern>/api/report/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>DELETE</http-method>
         </web-resource-collection>
         <auth-constraint>
             <role-name>USER</role-name>
+            <role-name>ADMIN</role-name>
         </auth-constraint>
     </security-constraint>
 
+    <!-- Login configuration -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>ApilageBankingRealm</realm-name>
+    </login-config>
+
+    <!-- Security roles -->
     <security-role>
         <role-name>USER</role-name>
     </security-role>
@@ -21,5 +39,11 @@
     <security-role>
         <role-name>ADMIN</role-name>
     </security-role>
+
+    <!-- Welcome files -->
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 
 </web-app>

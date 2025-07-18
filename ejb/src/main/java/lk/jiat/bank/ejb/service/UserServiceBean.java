@@ -61,9 +61,9 @@ public class UserServiceBean {
     public void sendVerificationEmail(String email, String token) throws MessagingException {
         Message message = new MimeMessage(mailSession);
         message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
-        message.setFrom(new InternetAddress("noreply@apilagebanking.com"));
+        message.setFrom(new InternetAddress("upek.wemixt@gmail.com"));
         message.setSubject("Verify your ApilageBanking Account");
-        message.setText("Click to verify your account: http://localhost:8080/apilagebanking/api/user/verify?token=" + token);
+        message.setText("Click to verify your Account: http://localhost:8080/apilagebanking/api/user/verify?token=" + token);
 
         Transport.send(message);
     }
@@ -91,6 +91,18 @@ public class UserServiceBean {
             return null;
         } else {
             return users.get(0);
+        }
+    }
+
+    public boolean verifyPassword(User user, String password) {
+        if (user == null || user.getPassword() == null) {
+            return false;
+        }
+        try {
+            return BCrypt.checkpw(password, user.getPassword());
+        } catch (Exception e) {
+            // Log the exception if needed
+            return false;
         }
     }
 }

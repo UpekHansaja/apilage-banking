@@ -2,17 +2,25 @@ package lk.jiat.bank.rest.resource;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import jakarta.security.enterprise.SecurityContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
-
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import lk.jiat.bank.security.jwt.JwtUtil;
 import lk.jiat.bank.security.rbac.RoleManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.security.Principal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -33,8 +41,23 @@ public class AuthResource {
     @PermitAll
     public Response login(@Context HttpServletRequest req) {
         try {
+            // Read raw request body
+            StringBuilder sb = new StringBuilder();
+            BufferedReader reader = req.getReader();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            // Convert to JSON
+            String body = sb.toString();
+            JsonObject jsonObject = Json.createReader(new StringReader(body)).readObject();
+
+            String userName = jsonObject.getString("username");
+            String passWord = jsonObject.getString("password");
+
             // Trigger JAAS authentication
-            req.login(req.getParameter("username"), req.getParameter("password"));
+            req.login(userName, passWord);
 
             Principal userPrincipal = req.getUserPrincipal();
             if (userPrincipal == null) {
@@ -51,6 +74,8 @@ public class AuthResource {
 
         } catch (ServletException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid credentials").build();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -1,5 +1,10 @@
 package lk.jiat.bank.security.auth;
 
+import lk.jiat.bank.ejb.service.UserServiceBean;
+import lk.jiat.bank.jpa.entity.User;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -19,10 +24,20 @@ public class DbLoginModule implements LoginModule {
     private String username;
     private Set<String> roles = new HashSet<>();
 
+    private UserServiceBean userService;
+
     @Override
-    public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
+    public void initialize(Subject subject, CallbackHandler callbackHandler,
+                           Map<String, ?> sharedState, Map<String, ?> options) {
         this.subject = subject;
         this.callbackHandler = callbackHandler;
+
+        try {
+            InitialContext ctx = new InitialContext();
+            userService = (UserServiceBean) ctx.lookup("java:global/apilagebanking/ejb/UserServiceBean");
+        } catch (NamingException e) {
+            throw new RuntimeException("❌ Failed to lookup UserServiceBean in LoginModule", e);
+        }
     }
 
     @Override
@@ -36,40 +51,31 @@ public class DbLoginModule implements LoginModule {
             username = nameCb.getName();
             String password = new String(passwordCb.getPassword());
 
-            // Dummy check (you should inject a UserService and verify credentials)
-            if ("admin".equals(username) && "admin123".equals(password)) {
-                roles.add("ADMIN");
-                return true;
+            // 🔐 Real check via UserService
+            User user = userService.findByUsername(username);
+
+            if (user == null || !userService.verifyPassword(user, password)) {
+                throw new LoginException("❌ Invalid credentials");
             }
 
-            throw new LoginException("Invalid credentials");
+            if (!user.isEnabled()) {
+                throw new LoginException("📧 Email not verified. Please check your inbox.");
+            }
+
+            user.getRoles().forEach(role -> roles.add(role.getName()));
+            return true;
 
         } catch (Exception e) {
-            throw new LoginException("Login failed: " + e.getMessage());
+            throw new LoginException("❌ Login failed: " + e.getMessage());
         }
     }
 
     @Override
     public boolean commit() {
-        subject.getPrincipals().add(new Principal() {
-            @Override
-            public String getName() {
-                return username;
-            }
-        });
-
-        for (String role : roles) {
-            subject.getPrincipals().add(new Principal() {
-                @Override
-                public String getName() {
-                    return role;
-                }
-            });
-        }
-
+        subject.getPrincipals().add((Principal) () -> username);
+        roles.forEach(role -> subject.getPrincipals().add((Principal) () -> role));
         return true;
     }
-
 
     @Override
     public boolean abort() {
