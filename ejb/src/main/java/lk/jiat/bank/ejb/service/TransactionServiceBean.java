@@ -54,4 +54,29 @@ public class TransactionServiceBean {
         withdraw(from, amount, "Transfer to " + to.getAccountNumber());
         return deposit(to, amount, "Transfer from " + from.getAccountNumber());
     }
+
+    public void calculateDailyInterest() {
+        BigDecimal annualInterestRate = new BigDecimal("0.01"); // 1% annual
+        BigDecimal dailyInterestRate = annualInterestRate.divide(new BigDecimal("365"), 10, BigDecimal.ROUND_HALF_UP);
+
+        var activeAccounts = em.createQuery(
+                        "SELECT a FROM Account a WHERE a.status = :status", Account.class)
+                .setParameter("status", lk.jiat.bank.jpa.entity.AccountStatus.ACTIVE)
+                .getResultList();
+
+        for (Account account : activeAccounts) {
+            BigDecimal balance = account.getBalance();
+            if (balance == null || balance.compareTo(BigDecimal.ZERO) <= 0) continue;
+
+            BigDecimal interest = balance.multiply(dailyInterestRate);
+            if (interest.compareTo(BigDecimal.ZERO) > 0) {
+                // Use the existing deposit() method to handle persistence + logging
+                deposit(account, interest, "Daily Interest");
+            }
+        }
+
+        System.out.println("✅ Daily interest applied to " + activeAccounts.size() + " active account(s).");
+    }
+
+
 }
