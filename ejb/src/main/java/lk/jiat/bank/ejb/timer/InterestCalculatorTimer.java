@@ -21,7 +21,7 @@ import java.util.List;
 @Startup
 public class InterestCalculatorTimer {
 
-    @PersistenceContext(unitName = "apilageBankingPU")
+    @PersistenceContext(unitName = "ApilageBankingPU")
     private EntityManager em;
 
     @Inject

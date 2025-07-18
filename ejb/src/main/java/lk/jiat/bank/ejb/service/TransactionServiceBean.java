@@ -1,5 +1,6 @@
 package lk.jiat.bank.ejb.service;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
@@ -14,11 +15,13 @@ import java.time.LocalDateTime;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@RolesAllowed({"USER", "ADMIN"})
 public class TransactionServiceBean {
 
     @PersistenceContext(unitName = "ApilageBankingPU")
     private EntityManager em;
 
+    @RolesAllowed({"USER", "ADMIN"})
     public Transaction deposit(Account acc, BigDecimal amount, String desc) {
         acc.setBalance(acc.getBalance().add(amount));
         em.merge(acc);
@@ -33,6 +36,7 @@ public class TransactionServiceBean {
         return txn;
     }
 
+    @RolesAllowed("USER")
     public Transaction withdraw(Account acc, BigDecimal amount, String desc) {
         if (acc.getBalance().compareTo(amount) < 0)
             throw new RuntimeException("Insufficient funds");
@@ -50,11 +54,13 @@ public class TransactionServiceBean {
         return txn;
     }
 
+    @RolesAllowed({"USER", "ADMIN"})
     public Transaction transfer(Account from, Account to, BigDecimal amount) {
         withdraw(from, amount, "Transfer to " + to.getAccountNumber());
         return deposit(to, amount, "Transfer from " + from.getAccountNumber());
     }
 
+    @RolesAllowed({"ADMIN"})
     public void calculateDailyInterest() {
         BigDecimal annualInterestRate = new BigDecimal("0.01"); // 1% annual
         BigDecimal dailyInterestRate = annualInterestRate.divide(new BigDecimal("365"), 10, BigDecimal.ROUND_HALF_UP);
@@ -77,6 +83,5 @@ public class TransactionServiceBean {
 
         System.out.println("✅ Daily interest applied to " + activeAccounts.size() + " active account(s).");
     }
-
 
 }

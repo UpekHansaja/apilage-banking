@@ -40,11 +40,7 @@ public class User {
     private LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
     public Set<Role> getRoles() {
@@ -59,4 +55,55 @@ public class User {
         this.username = username;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    public void setPassword(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void setEnabled(boolean b) {
+        this.verified = b;
+    }
+
+    public String getVerificationCode() {
+        return verificationToken;
+    }
+
+    public void setVerificationCode(String string) {
+        this.verificationToken = string;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setVerificationToken(Object o) {
+        if (o instanceof String) {
+            this.verificationToken = (String) o;
+        } else {
+            throw new IllegalArgumentException("Verification token must be a String");
+        }
+    }
 }

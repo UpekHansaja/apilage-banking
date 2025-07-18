@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class JwtUtil {
 
-    private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor("VerySecretKeyForApilageBankingApplication123456!".getBytes());
+    private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor("SecretKeyForApilageBankingApplicationISTHIS!".getBytes());
     private static final long EXPIRATION_MS = 3600_000; // 1 hour
 
     public static String generateToken(String username, Set<String> roles) {

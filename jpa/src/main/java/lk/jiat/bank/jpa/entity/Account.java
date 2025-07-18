@@ -60,4 +60,7 @@ public class Account {
         this.status = status;
     }
 
+    public User getUser() {
+        return user;
+    }
 }
