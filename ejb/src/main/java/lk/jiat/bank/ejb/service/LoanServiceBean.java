@@ -22,7 +22,7 @@ public class LoanServiceBean {
                 .setParameter("user", user)
                 .getSingleResult();
 
-//        set loanAmount to user's account
+//        update loanAmount to user's account
         BigDecimal newBalance = currentBalance.add(loanAmount);
         em.createQuery("UPDATE Account a SET a.balance = :newBalance WHERE a.user = :user")
                 .setParameter("newBalance", newBalance)

@@ -43,7 +43,7 @@ public class AdminServiceBean {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(hashed);
-        user.setEnabled(false); // require verification
+        user.setEnabled(false);
         user.setVerificationCode(UUID.randomUUID().toString());
 
         Set<Role> roleEntities = roles.stream()
@@ -60,9 +60,10 @@ public class AdminServiceBean {
         sendVerificationEmail(user.getEmail(), user.getVerificationCode());
     }
 
+//    send verification code as a mail with smtp
     private void sendVerificationEmail(String email, String verificationCode) {
         String from = "upek.wemixt@gmail.com";
-        String password = "wnsfwukdoslgejlx"; // ideally inject securely
+        String password = "wnsfwukdoslgejlx";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

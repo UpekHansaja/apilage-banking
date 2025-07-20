@@ -20,6 +20,7 @@ public class ScheduledTasksBean {
     @Resource(lookup = "jms/TransactionQueue")
     private Queue transactionQueue;
 
+    //    Trigger daily interest calculation at midnight
     @Schedule(hour = "0", minute = "0", second = "0", persistent = false)
     public void scheduleDailyInterestCalculation() {
         logger.info("🔔 Triggering daily interest calculation...");

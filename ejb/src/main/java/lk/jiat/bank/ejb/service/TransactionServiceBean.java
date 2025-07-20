@@ -6,6 +6,7 @@ import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import lk.jiat.bank.ejb.exception.InsufficientFundsException;
 import lk.jiat.bank.jpa.entity.Account;
 import lk.jiat.bank.jpa.entity.Transaction;
 import lk.jiat.bank.jpa.entity.TransactionType;
@@ -37,9 +38,9 @@ public class TransactionServiceBean {
     }
 
     @RolesAllowed("USER")
-    public Transaction withdraw(Account acc, BigDecimal amount, String desc) {
+    public Transaction withdraw(Account acc, BigDecimal amount, String desc) throws InsufficientFundsException {
         if (acc.getBalance().compareTo(amount) < 0)
-            throw new RuntimeException("Insufficient funds");
+            throw new InsufficientFundsException("Insufficient balance for transfer");
 
         acc.setBalance(acc.getBalance().subtract(amount));
         em.merge(acc);
@@ -55,7 +56,7 @@ public class TransactionServiceBean {
     }
 
     @RolesAllowed({"USER", "ADMIN"})
-    public Transaction transfer(Account from, Account to, BigDecimal amount) {
+    public Transaction transfer(Account from, Account to, BigDecimal amount) throws InsufficientFundsException {
         withdraw(from, amount, "Transfer to " + to.getAccountNumber());
         return deposit(to, amount, "Transfer from " + from.getAccountNumber());
     }
