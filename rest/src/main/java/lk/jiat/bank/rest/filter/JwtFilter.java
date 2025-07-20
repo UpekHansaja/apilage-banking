@@ -23,26 +23,36 @@ public class JwtFilter implements ContainerRequestFilter {
         String path = requestContext.getUriInfo().getPath();
         LOG.info("Processing request to: " + path);
 
-        // Skip JWT check for test endpoints
-        if (path.startsWith("/api/test") || path.equals("/api/test")) {
+        // Skip JWT check for test and auth/login endpoints
+        if (path.contains("test")) {
+
             LOG.info("Skipping JWT check for test endpoint");
-            return;
+
+        } else if (path.contains("auth/login")) {
+
+            LOG.info("Skipping JWT check for auth/login endpoint");
+
+        } else if (path.contains("auth/register")) {
+
+            LOG.info("Skipping JWT check for auth/register endpoint");
+
+        } else {
+
+            String authHeader = requestContext.getHeaderString("Authorization");
+            LOG.info("Auth header: " + authHeader);
+
+            if (authHeader == null) {
+                LOG.warning("Authorization header is missing");
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Authorization header is missing").build());
+                return;
+            }
+
+            String token = authHeader.substring("Bearer ".length());
+            if (!JwtUtil.isTokenValid(token)) {
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            }
         }
 
-        String authHeader = requestContext.getHeaderString("Authorization");
-        LOG.info("Auth header: " + authHeader);
-
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-            return;
-        }
-
-        String token = authHeader.substring("Bearer ".length());
-        if (!JwtUtil.isTokenValid(token)) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-        }
-
-        // Optionally set security context here...
     }
 }

@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>common</module>
         <module>jpa</module>
         <module>security</module>
         <module>ejb</module>

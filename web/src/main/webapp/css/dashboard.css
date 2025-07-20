@@ -1,0 +1,35 @@
+body {
+    background-color: #0D1116;
+    color: #F0F0F0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.sidebar {
+    background-color: #1A1D24;
+    min-height: 100vh;
+    padding-top: 1rem;
+}
+
+.sidebar a {
+    color: #F0F0F0;
+    display: block;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+}
+
+.sidebar a:hover {
+    background-color: #292E36;
+    border-left: 4px solid #FFC107;
+    color: #FFC107;
+}
+
+.sidebar h5 {
+    color: #FFC107;
+    padding-left: 1rem;
+    margin-top: 1rem;
+}
+
+.main {
+    padding: 2rem;
+}

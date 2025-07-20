@@ -18,6 +18,8 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                 "Accept": "application/json"
             },
             body: JSON.stringify({
+                // username: "admin",
+                // password: "adminpasswordhash"
                 username: username,
                 password: password
             })

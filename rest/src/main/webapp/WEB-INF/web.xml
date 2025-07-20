@@ -15,6 +15,13 @@
         <!-- No auth-constraint means no authentication required -->
     </security-constraint>
 
+    <security-role>
+        <role-name>USER</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ADMIN</role-name>
+    </security-role>
+
     <!-- Welcome files -->
     <welcome-file-list>
         <welcome-file>login.html</welcome-file>

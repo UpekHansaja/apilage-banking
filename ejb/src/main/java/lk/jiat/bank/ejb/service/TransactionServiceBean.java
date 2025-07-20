@@ -76,7 +76,7 @@ public class TransactionServiceBean {
 
             BigDecimal interest = balance.multiply(dailyInterestRate);
             if (interest.compareTo(BigDecimal.ZERO) > 0) {
-                // Use the existing deposit() method to handle persistence + logging
+                // Use the existing deposit()
                 deposit(account, interest, "Daily Interest");
             }
         }
